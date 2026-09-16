@@ -1,10 +1,52 @@
-# ARGUS
+<p align="center">
+  <img src="docs/media/argus-symbol.svg" alt="ARGUS orbital A symbol" width="100" height="100">
+</p>
 
-**Evidence-constrained agentic reasoning for noncoding regulatory variant interpretation.**
+<h1 align="center">ARGUS</h1>
+
+<p align="center">
+  <strong>Evidence-constrained agentic reasoning for noncoding regulatory variant interpretation.</strong>
+</p>
+
+<p align="center">
+  <a href="#current-limitations"><img src="docs/media/badge-status.svg" alt="Status: research"></a>
+  <a href="#evidence-rules"><img src="docs/media/badge-verifier.svg" alt="Verifier: deterministic"></a>
+  <a href="results/README.md"><img src="docs/media/badge-evaluation.svg" alt="Evaluation: small demonstration"></a>
+</p>
+
+<p align="center">
+  <a href="#illustrated-investigation">Demo</a> ·
+  <a href="docs/architecture.md">Architecture</a> ·
+  <a href="docs/data_setup.md">Data setup</a> ·
+  <a href="#current-limitations">Limitations</a> ·
+  <a href="CITATION.cff">Citation</a>
+</p>
+
+---
+
+## Overview
 
 ARGUS is a research framework with two connected stages: the existing DVR pipeline/notebook predicts transcription-factor (TF) binding probabilities for reference and alternate alleles, and the ARGUS investigation stage treats a DVR prediction as a hypothesis for bounded evidence investigation.
 
 The notebook/DVR stage and investigation runner are not yet fully integrated end-to-end from one natural-language prompt. Some runs use supplied or precomputed DVR probabilities. The current evaluation is a small demonstration, not a predictive-accuracy benchmark.
+
+## Illustrated investigation
+
+<p align="center">
+  <img src="docs/media/argus-demo.gif" alt="Illustrated ARGUS investigation: precomputed DVR probabilities lead to FOXA1 rescue from direct experimental evidence and KLF6 abstention when motif evidence and regulatory context do not resolve the binding claim. AlphaGenome Atlas stays outside the loop." width="800">
+</p>
+
+<p align="center">
+  <em>A 22-second illustration of the demonstrated investigation behavior, using precomputed DVR predictions. This is not a live run or a predictive-accuracy benchmark.</em>
+</p>
+
+<p align="center">
+  <a href="docs/media/argus-demo-poster.png">View a still image</a> ·
+  <a href="docs/media/argus-demo.html">Interactive version (download and open locally)</a> ·
+  <a href="docs/media/argus-symbol.svg">ARGUS symbol</a>
+</p>
+
+**Two outcomes, one evidence standard.** In the illustrated FOXA1 case, admissible direct experimental evidence contradicts the DVR prediction and the investigation status is `rescued`. For KLF6, motif evidence opposes DVR and regulatory context is non-resolving, so ARGUS abstains. The planner cannot override the deterministic verifier, and the reporter narrates fixed facts.
 
 ## Evaluated architecture
 
@@ -54,7 +96,7 @@ The documented scope is research interpretation of predictions and evidence. No 
 - [Environment template](.env.example): proposed local settings, pending alignment with source.
 - [Citation metadata](CITATION.cff): provisional project citation.
 
-This checkout currently contains documentation, templates, and the architecture figure. The capabilities above follow the maintainer's project summary; source, dependencies, and runnable entry points are not present here for independent code verification. Installation and execution commands remain to be documented from the source.
+This checkout currently contains documentation, templates, the architecture figure, and illustrative media. The capabilities above follow the maintainer's project summary; source, dependencies, and runnable entry points are not present here for independent code verification. Installation and execution commands remain to be documented from the source.
 
 ## Local setup and contributions
 

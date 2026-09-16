@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title desc">
+  <title id="title">ARGUS</title>
+  <desc id="desc">An orbital A symbol for evidence-constrained investigation.</desc>
+  <rect width="128" height="128" rx="28" fill="#f0f7f5"/>
+  <g fill="none" stroke="#197e78" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="64" cy="64" r="42" stroke-width="2"/>
+    <ellipse cx="64" cy="64" rx="51" ry="16" transform="rotate(-24 64 64)" stroke-width="2.2"/>
+    <path d="M44 84 64 37 83 84 M52 67H75" stroke-width="4.8"/>
+  </g>
+  <circle cx="108" cy="30" r="5" fill="#197e78" stroke="#f0f7f5" stroke-width="3"/>
+</svg>
