@@ -1,0 +1,22 @@
+cff-version: 1.2.0
+message: >-
+  Citation metadata is provisional. Confirm contributor attribution and add
+  release and repository details with the maintainer before formal citation.
+type: software
+title: 'ARGUS: Evidence-constrained agentic reasoning for noncoding regulatory variant interpretation'
+authors:
+  # Provisional collective attribution; replace with maintainer-approved authors.
+  - name: ARGUS contributors
+abstract: >-
+  ARGUS combines DVR transcription factor binding predictions with a
+  deterministic investigation using ADASTRA, JASPAR, and ENCODE cCRE,
+  deterministic verification and abstention/stopping rules, an optional
+  Anthropic planner restricted to allowed evidence actions, and prose reporting
+  from fixed evidence facts. AlphaGenome Atlas is evaluated separately as a
+  computational cross-reference and is not yet integrated into the loop.
+keywords:
+  - noncoding regulatory variants
+  - transcription factor binding
+  - evidence-constrained reasoning
+  - agentic reasoning
+# Add repository-code, version, date-released, DOI, and license only when known.
