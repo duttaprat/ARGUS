@@ -1,0 +1,30 @@
+# ARGUS: Evidence-Constrained Agentic Reasoning
+# for Noncoding Regulatory Variant Interpretation
+
+# Core pipeline
+langgraph>=0.2.0
+langchain>=0.3.0
+langchain-community>=0.3.0
+
+# Anthropic (LLM planner + reporter)
+anthropic>=0.40.0
+langchain-anthropic>=0.3.0
+
+# Scientific computing
+numpy
+pandas
+
+# Genomic tools
+pysam
+pyjaspar>=3.0.0
+
+# DVR inference
+torch>=2.0.0
+transformers>=4.40.0
+
+# Utilities
+requests
+python-dotenv
+
+# Optional: AlphaGenome Atlas
+# alphagenome>=0.9.0

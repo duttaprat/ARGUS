@@ -1,29 +1,39 @@
 cff-version: 1.2.0
-message: >-
-  Citation metadata is provisional. Confirm contributor attribution and add
-  release and repository details with the maintainer before formal citation.
+message: "If you use ARGUS, please cite the following paper."
 type: software
-title: 'ARGUS: Evidence-constrained agentic reasoning for noncoding regulatory variant interpretation'
+title: "ARGUS: Evidence-Constrained Agentic Reasoning for Noncoding Regulatory Variant Interpretation"
 authors:
-  # Provisional collective attribution; replace with maintainer-approved authors.
-  - name: ARGUS contributors
+  - family-names: Dutta
+    given-names: Pratik
+    orcid: "https://orcid.org/0000-0002-6943-7098"
+    affiliation: "Department of Biomedical Informatics, Stony Brook University"
+  - family-names: Davuluri
+    given-names: Ramana V.
+    affiliation: "Department of Biomedical Informatics, Stony Brook University"
 abstract: >-
-  ARGUS is a research framework with a DVR prediction stage producing reference-
-  and alternate-allele transcription factor binding probabilities and a bounded
-  evidence-investigation stage. ADASTRA provides direct experimental evidence;
-  JASPAR motif evidence and ENCODE cCRE context are indirect. Strong terminal
-  decisions require admissible direct experimental evidence, with abstention
-  permitted for unresolved evidence. A deterministic rule-based planner or
-  optional Anthropic planner selects allowed actions; deterministic verification
-  determines scientific verdicts. An Anthropic reporter generates prose from
-  fixed structured facts. The stages are not yet fully integrated end-to-end
-  from one natural-language prompt, and some runs use precomputed DVR
-  probabilities. AlphaGenome Atlas remains a standalone computational
-  comparison. The evaluation is a small demonstration, not a predictive-accuracy
-  benchmark.
+  ARGUS is an evidence-constrained agentic framework for interpreting noncoding
+  regulatory variant predictions. It wraps 458 DNABERT-based TF binding models
+  in a hypothesis-directed investigation loop where a planner selects evidence
+  sources based on current uncertainty, a verifier deterministically interprets
+  each observation, and intermediate results change the investigation path.
+  Deterministic classification prevents LLM hallucination structurally.
 keywords:
   - noncoding regulatory variants
   - transcription factor binding
   - evidence-constrained reasoning
-  - agentic reasoning
-# Add repository-code, version, date-released, DOI, and license only when known.
+  - agentic AI
+  - DNABERT
+  - variant interpretation
+  - hallucination prevention
+repository-code: "https://github.com/DavuluriLab/ARGUS"
+license: Apache-2.0
+preferred-citation:
+  type: conference-paper
+  title: "ARGUS: Evidence-Constrained Agentic Reasoning for Noncoding Regulatory Variant Interpretation"
+  authors:
+    - family-names: Dutta
+      given-names: Pratik
+    - family-names: Davuluri
+      given-names: Ramana V.
+  collection-title: "NeurIPS 2026 Workshop on Agentic AI for Biological Discovery (AgenticLS)"
+  year: 2026
