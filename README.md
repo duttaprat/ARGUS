@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/media/argus-symbol.svg" alt="ARGUS" width="120" height="120">
+  <img src="docs/media/argus-symbol.png" alt="ARGUS symbol: an eye combining evidence streams" width="320">
 </p>
 
 <h1 align="center">ARGUS</h1>

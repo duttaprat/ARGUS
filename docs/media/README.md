@@ -4,7 +4,8 @@ These assets illustrate the documented ARGUS investigation behavior. They are pr
 
 | Asset | Purpose |
 | --- | --- |
-| [ARGUS symbol](argus-symbol.svg) | Teal orbital A mark, adapted from the approved visual concept |
+| [ARGUS symbol](argus-symbol.png) | Maintainer-supplied eye-and-evidence symbol, displayed in the main README |
+| [Earlier symbol concept](argus-symbol.svg) | Original orbital A concept, retained with the earlier animation assets |
 | [Animated investigation](argus-demo.gif) | Compact 22-second looping illustration for the repository README |
 | [Still image](argus-demo-poster.png) | Non-animated view of the FOXA1 illustration |
 | [Interactive version](argus-demo.html) | Download and open locally for pause/play controls |
