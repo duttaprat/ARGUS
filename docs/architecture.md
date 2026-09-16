@@ -1,61 +1,74 @@
 # ARGUS architecture
 
-This document records the maintainer-described components and their intended boundaries. Source code is not yet present in this checkout, so module names, schemas, control-flow details, thresholds, and command-line interfaces remain to be documented from the implementation.
+ARGUS has two connected research stages: DVR prediction and bounded evidence investigation. This document follows the maintainer's project summary as the source of truth. The supplied manuscript provides supporting context; older or conflicting wording does not define current capabilities. Source is not present in this checkout, so exact schemas, commands, thresholds, and runtime configuration still need verification against the implementation.
 
-## Evidence flow
+## Primary architecture figure
 
-```text
-Variant input
-    |
-    v
-DVR prediction --> TF binding probabilities
-    |
-    v
-Deterministic investigation <--> ADASTRA / JASPAR / ENCODE cCRE
-    ^            |
-    |            v
-    +--- Deterministic verification and stopping/abstention
-                 |
-                 v
-          Fixed evidence facts --> Reporter --> Prose report
+![ARGUS evaluated loop: precomputed DVR hypotheses, planner policy, evidence acquisition, deterministic verification and stopping, fixed-fact narration, and a separate Atlas comparison](figures/ARGUS_architecture.png)
 
-Optional Anthropic planner --> chooses only allowed evidence actions
-                               for the investigation
+*This figure depicts the evaluated loop using precomputed DVR predictions. It does not depict a completed natural-language-to-DVR-to-investigation integration. AlphaGenome Atlas remains a separate computational comparison outside the loop.*
 
-AlphaGenome Atlas --> standalone computational cross-reference
-                     (not connected to the investigation loop)
-```
+## Stage 1: DVR prediction
 
-The diagram is conceptual, not a verified execution trace.
+The existing DVR pipeline/notebook takes a variant query and produces TF binding probabilities for the reference and alternate alleles. ARGUS uses a DVR prediction as an investigation hypothesis.
 
-## Component responsibilities
+The notebook/DVR prediction stage and the investigation runner are not yet fully integrated end-to-end from one natural-language prompt. Some investigation runs use supplied/precomputed probabilities. Retain the origin of those probabilities when describing a run; do not imply that an investigation-only run executed the prediction pipeline.
 
-### DVR prediction
+## Stage 2: bounded evidence investigation
 
-The prediction stage produces TF binding probabilities. Document the model identity, input requirements, output schema, and probability interpretation when the implementation is available. Do not infer calibration, effect direction, or clinical significance from the presence of a probability alone.
+The loop maintains a hypothesis and collected observations. A planner policy selects an allowed evidence action or abstains. After an evidence action, the deterministic verifier interprets the observation and assigns evidence states. Subsequent action selection depends on the updated state, within the investigation's bounds and stopping rules.
 
-### Investigation
+### Planner policies
 
-The deterministic investigation uses ADASTRA, JASPAR, and ENCODE cCRE. The implementation must supply the exact query actions, evidence representations, resource compatibility checks, and update rules; this document does not invent an action registry.
+Both implemented planners operate under the same scientific constraints:
 
-### Verification, abstention, and stopping
+- **Deterministic rule-based planner:** selects evidence actions using its rule-based policy.
+- **Optional Anthropic LLM planner:** can propose only allowed evidence actions or abstain. Deterministic guardrails validate proposals. The planner cannot change the verifier or scientific verdict.
 
-A deterministic verifier and deterministic abstention/stopping rules govern the investigation. The exact acceptance conditions, stopping criteria, budgets, and abstention reason codes remain to be documented from source. Keep a lack of retrieved evidence distinguishable from evidence that supports a negative finding.
+The figure labels this node **State + planner policy**: **Rule-based policy or optional LLM proposal, validated by deterministic guardrails.**
 
-### Optional planner
+Action selection and scientific classification have separate responsibilities. An LLM proposal is not evidence. Exact action identifiers, budgets, validation schemas, and error-handling behavior are not specified here without source verification.
 
-The Anthropic planner chooses only allowed evidence actions. Its role is action selection within the constrained workflow, while verification and stopping remain deterministic. Document the planner's input/output contract, validation, error handling, and fallback behavior when the source is added. Do not assume a fallback implementation from this design description.
+### Evidence sources and admissibility
 
-### Reporter
+| Source | Observation type | What it can establish in the loop |
+| --- | --- | --- |
+| ADASTRA | Direct experimental allele-specific TF binding evidence | May resolve a TF-binding hypothesis when the evidence is admissible under the deterministic verifier. |
+| JASPAR | Computational allele-specific motif evidence | Provides indirect motif evidence relative to the DVR hypothesis; cannot independently establish TF binding. |
+| ENCODE cCRE | Regulatory-element context | Describes regulatory context; cannot independently establish TF binding or resolve its allelic direction. |
 
-The reporter generates prose from fixed evidence facts. Reporting should preserve provenance and uncertainty and should not introduce new biological claims or silently convert a computational prediction into observed evidence. The precise fact format and report checks remain to be documented.
+The presence of a resource result is not sufficient for a strong terminal decision. Evidence type and admissibility matter. Missing evidence is not proof of absent binding, and contextual overlap is not experimental confirmation of a TF-specific claim.
 
-### AlphaGenome Atlas
+### Deterministic verification and stopping
 
-AlphaGenome Atlas has been evaluated as a standalone computational cross-reference. It is not yet wired into the investigation loop. Keep its findings and provenance separate from loop evidence and verifier decisions. Integration would require an explicit design and implementation change.
+The verifier interprets observations and assigns evidence states. Strong terminal decisions such as `supported`, `contradicted`, and `rescued` require admissible direct experimental evidence. Neither planner nor the reporter may override this requirement.
 
-## Reproducibility information to record
+Evidence that is unavailable, underpowered, contextual only, or mixed may leave the hypothesis unresolved. Stopping rules explicitly allow abstention in these circumstances. Indirect evidence must not be promoted into a strong direct-evidence verdict merely because the investigation stops.
 
-For future runs, record the code revision, model and resource versions, genome assembly, coordinate convention, normalized input, selected actions, retrieved evidence provenance, verification outcomes, stopping/abstention reasons, and report inputs. If the optional planner is used, also record its model identifier and relevant settings without secrets.
+Keep the observation's relationship to the DVR prediction separate from the final investigation status. In the illustrated FOXA1 case, direct experimental evidence contradicts the non-differential DVR prediction while the investigation status is `rescued`. Rescue does not mean confirmation of the original prediction.
 
-These are documentation requirements for reproducibility, not a claim that a run-manifest schema or logging system already exists. Deterministic control rules do not by themselves guarantee identical outputs across changed data, models, or optional planner responses.
+### Reading the KLF6 demonstration
+
+The figure shows unavailable ADASTRA evidence for the queried KLF6/variant entry, motif evidence opposing DVR, and cCRE regulatory context. **Motif evidence opposes DVR; regulatory context is non-resolving.** The result is abstention: motif direction and locus context cannot independently establish experimental KLF6 allele-specific binding. The cCRE observation does not counterbalance the motif result as evidence of TF-binding direction.
+
+The figure's evidence-call counts and logged-event counts describe different quantities. They are details of the illustrated run, not benchmark metrics or general execution guarantees.
+
+## Reporter
+
+The reporter uses Anthropic to generate prose from fixed structured facts. It cannot override deterministic classifications, alter the scientific verdict, or claim experimental confirmation without direct evidence.
+
+Anthropic therefore has two distinct roles when the optional planner is enabled: proposing allowed actions during investigation, and narrating fixed facts afterward. The reporter's factual constraints do not establish a measured rate of prose accuracy; the current evaluation is a small demonstration.
+
+## AlphaGenome Atlas boundary
+
+AlphaGenome Atlas was tested as a standalone computational cross-reference. It is not integrated into the loop, does not supply loop evidence, and does not determine loop verdicts. Its outputs remain computational comparisons, not direct experimental confirmation.
+
+## Evaluation and integration limits
+
+The current evaluation demonstrates bounded investigation behavior on a small set of examples, not predictive accuracy. The evaluated loop shown here starts from precomputed DVR predictions. A complete workflow from one natural-language prompt through fresh DVR prediction and investigation has not yet been integrated end-to-end.
+
+## Reproducibility information to retain
+
+For future run documentation, record the code revision, input identity, genome assembly and coordinate convention, origin of DVR probabilities, model and resource versions, planner policy, evidence actions, observation provenance, verifier outcomes, stopping/abstention reason, and facts supplied to the reporter. Record Anthropic model/settings separately for planning and reporting where used, without credentials.
+
+These are documentation expectations, not a claim that a particular manifest schema is implemented. Deterministic verification does not by itself guarantee identical optional planner or prose outputs across runs.

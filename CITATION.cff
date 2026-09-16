@@ -8,12 +8,19 @@ authors:
   # Provisional collective attribution; replace with maintainer-approved authors.
   - name: ARGUS contributors
 abstract: >-
-  ARGUS combines DVR transcription factor binding predictions with a
-  deterministic investigation using ADASTRA, JASPAR, and ENCODE cCRE,
-  deterministic verification and abstention/stopping rules, an optional
-  Anthropic planner restricted to allowed evidence actions, and prose reporting
-  from fixed evidence facts. AlphaGenome Atlas is evaluated separately as a
-  computational cross-reference and is not yet integrated into the loop.
+  ARGUS is a research framework with a DVR prediction stage producing reference-
+  and alternate-allele transcription factor binding probabilities and a bounded
+  evidence-investigation stage. ADASTRA provides direct experimental evidence;
+  JASPAR motif evidence and ENCODE cCRE context are indirect. Strong terminal
+  decisions require admissible direct experimental evidence, with abstention
+  permitted for unresolved evidence. A deterministic rule-based planner or
+  optional Anthropic planner selects allowed actions; deterministic verification
+  determines scientific verdicts. An Anthropic reporter generates prose from
+  fixed structured facts. The stages are not yet fully integrated end-to-end
+  from one natural-language prompt, and some runs use precomputed DVR
+  probabilities. AlphaGenome Atlas remains a standalone computational
+  comparison. The evaluation is a small demonstration, not a predictive-accuracy
+  benchmark.
 keywords:
   - noncoding regulatory variants
   - transcription factor binding

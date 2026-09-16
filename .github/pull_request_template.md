@@ -4,16 +4,22 @@ Describe what changes and why. Include a concrete before/after example when usef
 
 ## Scope
 
-Identify affected components and documentation. State whether this changes allowed evidence actions, resource handling, verification, abstention/stopping, planner behavior, or reporting from fixed facts. Label any AlphaGenome Atlas work as standalone or proposed loop integration.
+Identify the affected stages and documentation. State whether this changes allowed evidence actions, planner policies, deterministic verification, stopping/abstention, or Anthropic prose reporting from fixed facts. Label AlphaGenome Atlas work as standalone comparison or proposed loop integration.
 
 ## Validation
 
-List the checks performed and their outcomes. For documentation-only changes, record the relevant review; do not imply code tests were run. Note any unverified assumptions or limitations.
+List checks performed and outcomes. For documentation-only changes, record the review and do not imply code tests were run. Distinguish supplied/precomputed DVR probabilities from fresh prediction and investigation-only runs from end-to-end execution. Identify planner and reporter use of Anthropic separately.
 
-## Review checklist
+## Evidence and evaluation review
 
-- [ ] Documentation reflects actual behavior and labels proposals or unverified details.
-- [ ] Evidence provenance and uncertainty are preserved where applicable.
-- [ ] Changes to deterministic verification and stopping/abstention are explained where applicable.
-- [ ] No API keys, model weights, knowledgebase databases, large result files, or user-specific server paths are included.
-- [ ] Any new configuration is documented with secret-free placeholders.
+- [ ] Strong terminal decisions (`supported`, `contradicted`, `rescued`) remain tied to admissible direct experimental evidence.
+- [ ] JASPAR motif evidence and cCRE context are not presented as independently establishing TF binding.
+- [ ] Unavailable, underpowered, contextual-only, or mixed evidence can remain unresolved and lead to abstention.
+- [ ] Neither the optional planner nor the reporter overrides deterministic scientific classifications.
+- [ ] The small demonstration is not presented as a predictive-accuracy benchmark, autonomous discovery, or clinical use.
+- [ ] Implemented behavior, proposed changes, and unverified details are clearly distinguished.
+
+## Repository hygiene
+
+- [ ] No API keys, model weights, knowledgebase databases, large results, or user-specific server paths are included.
+- [ ] New configuration is documented with secret-free placeholders.
