@@ -9,11 +9,11 @@
 </p>
 
 <p align="center">
-  <a href="https://arxiv.org/abs/XXXX.XXXXX"><img src="https://img.shields.io/badge/arXiv-XXXX.XXXXX-b31b1b.svg" alt="arXiv"></a>
+  <!-- <a href="https://arxiv.org/abs/XXXX.XXXXX"><img src="https://img.shields.io/badge/arXiv-XXXX.XXXXX-b31b1b.svg" alt="arXiv"></a> -->
   <a href="https://huggingface.co/duttaprat/DeepVRegulome"><img src="https://img.shields.io/badge/HuggingFace-DVR%20Models-yellow" alt="HuggingFace"></a>
   <a href="#license"><img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="License"></a>
   <a href="https://www.python.org/downloads/"><img src="https://img.shields.io/badge/python-3.11+-blue.svg" alt="Python 3.11+"></a>
-  <a href="#citation"><img src="https://img.shields.io/badge/NeurIPS%202026-AgenticLS-purple.svg" alt="NeurIPS 2026"></a>
+  <!-- <a href="#citation"><img src="https://img.shields.io/badge/NeurIPS%202026-AgenticLS-purple.svg" alt="NeurIPS 2026"></a> -->
 </p>
 
 <p align="center">
@@ -21,8 +21,8 @@
   <a href="#installation">Installation</a> •
   <a href="#quick-start">Quick Start</a> •
   <a href="#architecture">Architecture</a> •
-  <a href="#results">Results</a> •
-  <a href="#citation">Citation</a>
+  <a href="#results">Results</a>
+  <!-- • <a href="#citation">Citation</a> -->
 </p>
 
 ---
@@ -57,7 +57,7 @@ ARGUS wraps [DeepVRegulome](https://github.com/DavuluriLab/DeepVRegulome)'s 458 
 ### Create conda environment
 
 ```bash
-git clone https://github.com/DavuluriLab/ARGUS.git
+git clone https://github.com/duttaprat/ARGUS.git
 cd ARGUS
 
 conda env create -f environment.yml
@@ -220,6 +220,7 @@ ARGUS/
 └── CITATION.cff
 ```
 
+<!-- Temporarily hidden from the rendered README; retained for future updates.
 ## Current limitations
 
 - DVR prediction and investigation are not yet fully integrated from one natural-language prompt
@@ -227,7 +228,9 @@ ARGUS/
 - Evaluated on 2 variants / 7 hypotheses (demonstrates behavior, not predictive accuracy)
 - ENCODE cCRE uses locally indexed BED files (SCREEN API unreachable from compute environment)
 - AlphaGenome Atlas is a standalone cross-reference, not integrated into the loop
+-->
 
+<!-- Citation pending final publication details.
 ## Citation
 
 ```bibtex
@@ -236,9 +239,10 @@ ARGUS/
   author={Dutta, Pratik and Davuluri, Ramana V.},
   booktitle={NeurIPS 2026 Workshop on Agentic AI for Biological Discovery (AgenticLS)},
   year={2026},
-  url={https://github.com/DavuluriLab/ARGUS}
+  url={https://github.com/duttaprat/ARGUS}
 }
 ```
+-->
 
 ## License
 
