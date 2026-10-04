@@ -7,6 +7,14 @@ authors:
     given-names: Pratik
     orcid: "https://orcid.org/0000-0002-6943-7098"
     affiliation: "Department of Biomedical Informatics, Stony Brook University"
+  - family-names: Obusan
+    given-names: Matthew B.
+  - family-names: Chao
+    given-names: Max
+  - family-names: Sathian
+    given-names: Rekha
+  - family-names: Papineni
+    given-names: Nimisha
   - family-names: Davuluri
     given-names: Ramana V.
     affiliation: "Department of Biomedical Informatics, Stony Brook University"
@@ -16,7 +24,8 @@ abstract: >-
   in a hypothesis-directed investigation loop where a planner selects evidence
   sources based on current uncertainty, a verifier deterministically interprets
   each observation, and intermediate results change the investigation path.
-  Deterministic classification prevents LLM hallucination structurally.
+  All biological classification is deterministic; an LLM is used only for
+  optional constrained planning and fact-constrained reporting.
 keywords:
   - noncoding regulatory variants
   - transcription factor binding
@@ -24,16 +33,24 @@ keywords:
   - agentic AI
   - DNABERT
   - variant interpretation
-  - hallucination prevention
-repository-code: "https://github.com/DavuluriLab/ARGUS"
+repository-code: "https://github.com/duttaprat/ARGUS"
 license: Apache-2.0
 preferred-citation:
   type: conference-paper
-  title: "ARGUS: Evidence-Constrained Agentic Reasoning for Noncoding Regulatory Variant Interpretation"
+  title: "Unlocking the Regulatory Genome by ARGUS: An Evidence-Constrained Agentic Framework for Interpreting Single Nucleotide Variants"
   authors:
     - family-names: Dutta
       given-names: Pratik
+    - family-names: Obusan
+      given-names: Matthew B.
+    - family-names: Chao
+      given-names: Max
+    - family-names: Sathian
+      given-names: Rekha
+    - family-names: Papineni
+      given-names: Nimisha
     - family-names: Davuluri
       given-names: Ramana V.
   collection-title: "NeurIPS 2026 Workshop on Agentic AI for Biological Discovery (AgenticLS)"
+  notes: "Poster, non-archival"
   year: 2026

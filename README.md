@@ -13,16 +13,15 @@
   <a href="https://huggingface.co/duttaprat/DeepVRegulome"><img src="https://img.shields.io/badge/HuggingFace-DVR%20Models-yellow" alt="HuggingFace"></a>
   <a href="#license"><img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="License"></a>
   <a href="https://www.python.org/downloads/"><img src="https://img.shields.io/badge/python-3.11+-blue.svg" alt="Python 3.11+"></a>
-  <!-- <a href="#citation"><img src="https://img.shields.io/badge/NeurIPS%202026-AgenticLS-purple.svg" alt="NeurIPS 2026"></a> -->
+  <a href="#citation"><img src="https://img.shields.io/badge/NeurIPS%202026-AgenticLS%20Workshop-purple.svg" alt="NeurIPS 2026 AgenticLS Workshop"></a>
 </p>
 
 <p align="center">
   <a href="#overview">Overview</a> •
-  <a href="#installation">Installation</a> •
-  <a href="#quick-start">Quick Start</a> •
+  <a href="#code-availability">Code availability</a> •
   <a href="#architecture">Architecture</a> •
-  <a href="#results">Results</a>
-  <!-- • <a href="#citation">Citation</a> -->
+  <a href="#results">Results</a> •
+  <a href="#citation">Citation</a>
 </p>
 
 ---
@@ -35,93 +34,21 @@ ARGUS (**A**gentic **R**egulatory **G**enomics for an **U**ncertainty-aware **S*
 
 ARGUS wraps [DeepVRegulome](https://github.com/DavuluriLab/DeepVRegulome)'s 458 DNABERT-based TF binding models in a hypothesis-directed investigation loop where:
 
-- A **deterministic classifier** prevents LLM hallucination structurally (not by prompting)
+- A **deterministic classifier** assigns every biological label, so an LLM never interprets raw model outputs
 - A **planner** selects evidence sources based on current uncertainty
 - A **verifier** deterministically interprets each observation
 - **Intermediate results change the investigation path**
-- The LLM enters only at reporting, constrained by pre-classified facts it cannot override
+- An LLM is used only for optional constrained planning and for reporting from pre-classified facts; it cannot change any classification or verdict
 
 <p align="center">
   <img src="docs/figures/ARGUS_architecture.png" alt="ARGUS Architecture" width="800">
 </p>
 
-## Installation
+## Code availability
 
-### Prerequisites
+ARGUS is under active development. Source code will be released in stages, with the full implementation released alongside the extended manuscript. This repository currently provides the documentation, architecture figure, and citation for the workshop paper.
 
-- Python 3.11+
-- [Conda](https://docs.conda.io/en/latest/miniconda.html) (recommended)
-- ANTHROPIC_API_KEY (for the LLM planner and reporter)
-- Local ADASTRA, JASPAR, and ENCODE cCRE data (see [Data Setup](docs/data_setup.md))
-
-### Create conda environment
-
-```bash
-git clone https://github.com/duttaprat/ARGUS.git
-cd ARGUS
-
-conda env create -f environment.yml
-conda activate argus
-```
-
-### Set API keys
-
-```bash
-# Required for LLM planner and reporter
-export ANTHROPIC_API_KEY="sk-ant-..."
-
-# Optional: for AlphaGenome Atlas cross-reference
-export ALPHA_GENOME_API_KEY="your-key"
-```
-
-### Verify installation
-
-```bash
-# Run module self-tests
-python -m dvr_agent.state
-python -m dvr_agent.planner
-python -m dvr_agent.verifier
-python -m dvr_agent.stopping
-```
-
-## Quick Start
-
-### Single TF hypothesis investigation
-
-```bash
-# Investigate FOXA1 binding at rs6983267 (8q24 colorectal cancer locus)
-python -m dvr_agent.run_argus_loop_new \
-  --rsid rs6983267 --tf FOXA1 \
-  --ref-prob 0.995 --alt-prob 0.995 \
-  --label binding_retained \
-  --chrom chr8 --pos 127401060 \
-  --ref G --alt T \
-  --assembly GRCh38 \
-  --tools ADASTRA JASPAR ENCODE_cCRE \
-  --output results/argus_foxa1.json
-```
-
-### Using the LLM planner (requires ANTHROPIC_API_KEY)
-
-```bash
-# Create a case file
-echo '{"rsid":"rs6983267","tf":"KLF6","ref_prob":0.604,"alt_prob":0.915,
-  "label":"binding_strengthened","chrom":"chr8","pos":127401060,
-  "ref":"G","alt":"T","assembly":"GRCh38"}' > cases/klf6.json
-
-# Run with the LLM planner
-python -m dvr_agent.run_argus_planned \
-  --case cases/klf6.json \
-  --planner llm \
-  --output results/klf6_llm.json
-```
-
-### Compare fixed vs. LLM planner
-
-```bash
-python -m dvr_agent.run_argus_planned --case cases/klf6.json --planner fixed --output results/klf6_fixed.json
-python -m dvr_agent.run_argus_planned --case cases/klf6.json --planner llm   --output results/klf6_llm.json
-```
+Running ARGUS will require Python 3.11+, an Anthropic API key (for the optional LLM planner and the reporter), and local ADASTRA, JASPAR, and ENCODE cCRE resources (see [Data Setup](docs/data_setup.md)).
 
 ## Architecture
 
@@ -168,81 +95,35 @@ Reporter → constrained narrative from fixed facts
 
 ## Results
 
-Evaluated on 2 variants across 2 disease contexts using real evidence from local ADASTRA, JASPAR, and ENCODE cCRE data. All observations are from actual database queries; no results are simulated.
+The workshop paper evaluates ARGUS on a small set of TF hypotheses at rs6983267 (8q24, colorectal cancer). It demonstrates investigation behavior; it is not a predictive-accuracy benchmark. Two illustrative trajectories:
 
-### rs6983267 (8q24, colorectal cancer)
+| TF | DVR prediction | Steps | Tools used | Final status | Key observation |
+|----|---------------|:-----:|-----------|:------------:|-----------------|
+| FOXA1 | retained [saturated] | 3 | ADASTRA | **rescued** | Significant allele-specific binding (FDR = 0.030, 15 experiments, 475 reads); contradicts the non-differential DVR prediction |
+| KLF6 | strengthened | 8 | ADASTRA → JASPAR → cCRE | **abstained** | No ADASTRA record; JASPAR motif opposes DVR (Δ = −0.147); regulatory context is non-resolving |
 
-| TF | DVR prediction | Steps | Tools used | Final status | Key finding |
-|----|---------------|:-----:|-----------|:------------:|-------------|
-| FOXA1 | retained [saturated] | 3 | ADASTRA | **rescued** | ASB confirmed (FDR=0.030, 15 exp., 475 reads) |
-| KLF6 | strengthened | 8 | ADASTRA → JASPAR → cCRE | **abstained** | JASPAR contradicts DVR (Δ=-0.147); mixed evidence |
-| RAD21 | no binding | 3 | ADASTRA | **contradicted** | Real ASB found (FDR=0.015); model failure |
-| SP1 | no binding | 4 | ADASTRA | **abstained** | Classifier prevented hallucination (log-odds=3.02) |
+The same planner produces a 3-step and an 8-step trajectory because the intermediate observations differ. See the paper for the full set of cases and the fixed vs. LLM planner comparison.
 
-### rs2981578 (FGFR2, breast cancer)
+## Limitations
 
-| TF | DVR prediction | Steps | Tools used | Final status | Key finding |
-|----|---------------|:-----:|-----------|:------------:|-------------|
-| BACH1 | LOF (0.996→0.011) | 8 | ADASTRA → JASPAR → cCRE | **partially supported** | JASPAR concordant with LOF direction |
-| FOXA1 | retained [saturated] | 8 | ADASTRA → JASPAR → cCRE | **abstained** | No ADASTRA rescue possible (unlike rs6983267) |
-| RBBP5 | weakened | 8 | ADASTRA → JASPAR → cCRE | **abstained** | Context only; no TF-specific evidence |
-
-### AlphaGenome Atlas cross-reference
-
-AlphaGenome Atlas (released September 8, 2026) independently assigns rs6983267 an AVI score of 0.570, confirming high regulatory impact. TF-specific CHIP_TF predictions show the largest change for FOXA1 (|Δ|=0.463), consistent with the ADASTRA rescue.
-
-## Project structure
-
-```
-ARGUS/
-├── dvr_agent/
-│   ├── state.py              # Hypothesis state and trajectory
-│   ├── planner.py             # Fixed evidence priority policy
-│   ├── planner_llm.py         # LLM-mediated planner (Claude)
-│   ├── verifier.py            # Deterministic evidence interpreter
-│   ├── stopping.py            # Terminal status assignment
-│   ├── run_argus_loop_new.py  # Closed-loop runner (3 tools)
-│   ├── run_argus_planned.py   # Runner with planner selection
-│   ├── reporter.py            # Constrained LLM narrative generator
-│   ├── falsifier.py           # ADASTRA evidence source
-│   ├── motif.py               # JASPAR motif scoring
-│   ├── encode_ccres.py        # ENCODE cCRE lookup
-│   ├── classify.py            # Deterministic binding classifier
-│   ├── graph.py               # LangGraph pipeline (DVR stage)
-│   └── alphagenome_adapter.py # AlphaGenome Atlas adapter
-├── docs/
-│   ├── architecture.md
-│   └── data_setup.md
-├── results/
-│   └── README.md
-├── environment.yml
-├── requirements.txt
-└── CITATION.cff
-```
-
-<!-- Temporarily hidden from the rendered README; retained for future updates.
-## Current limitations
-
-- DVR prediction and investigation are not yet fully integrated from one natural-language prompt
+- Evaluated on a small number of hypotheses; it demonstrates behavior, not predictive accuracy
+- Decision thresholds (motif score difference, ADASTRA power filter) are heuristic and not yet calibrated
+- DVR predictions are precomputed; prediction and investigation are not yet integrated end-to-end
 - The fixed planner uses a priority list, not a learned policy
-- Evaluated on 2 variants / 7 hypotheses (demonstrates behavior, not predictive accuracy)
-- ENCODE cCRE uses locally indexed BED files (SCREEN API unreachable from compute environment)
-- AlphaGenome Atlas is a standalone cross-reference, not integrated into the loop
--->
+- Factual accuracy of the generated narrative has not been formally evaluated
+- AlphaGenome Atlas was used only as a standalone computational cross-reference, outside the loop
 
-<!-- Citation pending final publication details.
 ## Citation
 
 ```bibtex
 @inproceedings{dutta2026argus,
-  title={ARGUS: Evidence-Constrained Agentic Reasoning for Noncoding Regulatory Variant Interpretation},
-  author={Dutta, Pratik and Davuluri, Ramana V.},
-  booktitle={NeurIPS 2026 Workshop on Agentic AI for Biological Discovery (AgenticLS)},
-  year={2026},
-  url={https://github.com/duttaprat/ARGUS}
+  title     = {Unlocking the Regulatory Genome by {ARGUS}: An Evidence-Constrained Agentic Framework for Interpreting Single Nucleotide Variants},
+  author    = {Dutta, Pratik and Obusan, Matthew B. and Chao, Max and Sathian, Rekha and Papineni, Nimisha and Davuluri, Ramana V.},
+  booktitle = {NeurIPS 2026 Workshop on Agentic AI for Biological Discovery (AgenticLS)},
+  year      = {2026},
+  note      = {Poster, non-archival}
 }
 ```
--->
 
 ## License
 
@@ -257,4 +138,4 @@ DVR model weights are available under CC-BY-NC-4.0 at [HuggingFace](https://hugg
 - [JASPAR](https://jaspar.elixir.no/) for TF binding profiles
 - [ENCODE](https://www.encodeproject.org/) for candidate cis-regulatory elements
 - [AlphaGenome Atlas](https://alphagenome.deepmind.com/) for independent variant impact predictions
-- [Anthropic](https://www.anthropic.com/) for Claude API access through the Anthropic for Science program
+- [Anthropic](https://www.anthropic.com/) for Claude API access through the AI for Science program

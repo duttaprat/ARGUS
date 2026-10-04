@@ -1,6 +1,6 @@
 # Local data setup
 
-ARGUS resources are managed locally and are not included in this repository. The implemented workflow has a DVR prediction stage and a bounded investigation stage, but they are not yet fully integrated end-to-end from one natural-language prompt. This checkout does not contain source or dependency specifications, so this guide describes resource organization rather than executable installation commands.
+ARGUS resources are managed locally and are not included in this repository. The implemented workflow has a DVR prediction stage and a bounded investigation stage, but they are not yet fully integrated end-to-end from one natural-language prompt. Source code is not yet included in this repository, so this guide describes resource organization rather than executable installation commands.
 
 ## Prediction input and evidence resources
 

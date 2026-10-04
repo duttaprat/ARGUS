@@ -13,7 +13,7 @@ These are demonstration cases, not a predictive-accuracy benchmark. AlphaGenome 
 
 ## Runnable examples
 
-No executable examples are included in this checkout because source and a verified command-line interface are not present.
+Executable examples will be added with the code release.
 
 Future examples should be small, synthetic or approved for redistribution, and should document:
 

@@ -1,6 +1,6 @@
 # ARGUS architecture
 
-ARGUS has two connected research stages: DVR prediction and bounded evidence investigation. This document follows the maintainer's project summary as the source of truth. The supplied manuscript provides supporting context; older or conflicting wording does not define current capabilities. Source is not present in this checkout, so exact schemas, commands, thresholds, and runtime configuration still need verification against the implementation.
+ARGUS has two connected research stages: DVR prediction and bounded evidence investigation. Source code is not yet included in this repository; exact schemas, commands, thresholds, and runtime configuration will be documented with the code release.
 
 ## Primary architecture figure
 
