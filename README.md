@@ -116,12 +116,13 @@ The same planner produces a 3-step and an 8-step trajectory because the intermed
 ## Citation
 
 ```bibtex
-@inproceedings{dutta2026argus,
-  title     = {Unlocking the Regulatory Genome by {ARGUS}: An Evidence-Constrained Agentic Framework for Interpreting Single Nucleotide Variants},
-  author    = {Dutta, Pratik and Obusan, Matthew B. and Chao, Max and Sathian, Rekha and Papineni, Nimisha and Davuluri, Ramana V.},
-  booktitle = {NeurIPS 2026 Workshop on Agentic AI for Biological Discovery (AgenticLS)},
-  year      = {2026},
-  note      = {Poster, non-archival}
+@inproceedings{
+dutta2026unlocking,
+title={Unlocking the Regulatory Genome by {ARGUS}: An Evidence-Constrained Agentic Framework for Interpreting Single Nucleotide Variants},
+author={Pratik Dutta and Matthew B. Obusan and Max Chao and Rekha Sathian and nimisha papineni and Ramana V Davuluri},
+booktitle={NeurIPS 2026 Agentic AI for Biological Discovery Workshop},
+year={2026},
+url={https://openreview.net/forum?id=Vx5LzAifFj}
 }
 ```
 
